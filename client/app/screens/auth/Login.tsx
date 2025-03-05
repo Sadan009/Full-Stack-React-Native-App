@@ -39,7 +39,7 @@ const Login = ({ navigation }: { navigation: LoginScreenNavigationProp }) => {
         return;
       }
       setLoading(false);
-      const { data } = await axios.post("/login", { email, password });
+      const { data } = await axios.post("/auth/login", { email, password });
       setState(data);
       await AsyncStorage.setItem("@auth", JSON.stringify(data));
       alert(data && data.msg);

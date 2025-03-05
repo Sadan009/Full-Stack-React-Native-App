@@ -48,7 +48,11 @@ const Register = ({
         return;
       }
       setLoading(false);
-      const { data } = await axios.post("/register", { name, email, password });
+      const { data } = await axios.post("/auth/register", {
+        name,
+        email,
+        password,
+      });
       alert(data && data.msg);
       navigation.navigate("Login");
       console.log("Register Data => ", { name, email, password });

@@ -60,7 +60,7 @@ const Account = () => {
       setLoading(true);
       // pass the data to network :
       const { data } = await axios.put<UpdateResponse>(
-        "/update-user",
+        "/auth/update-user",
         {
           name,
           password,

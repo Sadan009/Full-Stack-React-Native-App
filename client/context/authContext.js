@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { API_BASE_URL } from "../config.local";
 // context:
 const AuthContext = createContext();
 
@@ -14,7 +15,7 @@ const AuthProvider = ({ children }) => {
 
   //   default axios setting:
   axios.defaults.headers.common["Authorization"] = `Bearer ${state?.token}`;
-  axios.defaults.baseURL = "http://192.168.1.6:8080/api/auth";
+  axios.defaults.baseURL = API_BASE_URL;
 
   //   initial local storage data:
   useEffect(() => {
