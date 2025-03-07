@@ -7,16 +7,29 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FooterMenu from "@/components/Menus/FooterMenu";
 import { FontAwesome5 } from "@expo/vector-icons";
 import axios from "axios";
+import { PostContext } from "@/context/postContext";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type RootStackParamList = {
+  Home: undefined;
+};
+
+type LoginScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Home"
+>;
 
 interface ErrorResponse {
   message?: string;
 }
 
-const Post = () => {
+const Post = ({ navigation }: { navigation: LoginScreenNavigationProp }) => {
+  // global state:
+  const [posts, setPosts] = useContext(PostContext);
   // local state:
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -40,8 +53,9 @@ const Post = () => {
         description,
       });
       setLoading(false);
+      setPosts([...posts, data?.posts]);
       alert(data?.msg);
-      // navigation.navigate("Home");
+      navigation.navigate("Home");
     } catch (error) {
       // type guard to check if it's an AxiosError:
       if (!title || !description) {

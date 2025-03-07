@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import React, { useState, useContext } from "react";
 import InputBox from "@/components/Forms/InputBox";
 import SubmitButton from "@/components/Forms/SubmitButton";
@@ -61,46 +68,51 @@ const Login = ({ navigation }: { navigation: LoginScreenNavigationProp }) => {
   };
   getLocalStorageData();
   return (
-    <View style={styles.container}>
-      <Text style={styles.pageTitle}>Login</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={styles.container}>
+        <Text style={styles.pageTitle}>Login</Text>
 
-      <View
-        style={{
-          marginHorizontal: 20,
-        }}
-      >
-        <InputBox
-          inputTitle={"Email"}
-          keyboardType="email-address"
-          autoComplete="off"
-          value={email}
-          setValue={setEmail}
-        />
-        <InputBox
-          inputTitle={"Password"}
-          secureTextEntry={true}
-          autoComplete="password"
-          value={password}
-          setValue={setPassword}
-        />
-      </View>
-      <SubmitButton
-        handleSubmit={handleSubmit}
-        btnTitle="Login"
-        loading={loading}
-      />
-      {/* <Text>{JSON.stringify({name, email,password}, null, 4)}</Text> */}
-      <Text style={styles.linkText}>
-        Don't have an account?
-        <Text
-          style={styles.link}
-          onPress={() => navigation.navigate("Register")}
+        <View
+          style={{
+            marginHorizontal: 20,
+          }}
         >
-          {" "}
-          Register
+          <InputBox
+            inputTitle={"Email"}
+            keyboardType="email-address"
+            autoComplete="off"
+            value={email}
+            setValue={setEmail}
+          />
+          <InputBox
+            inputTitle={"Password"}
+            secureTextEntry={true}
+            autoComplete="password"
+            value={password}
+            setValue={setPassword}
+          />
+        </View>
+        <SubmitButton
+          handleSubmit={handleSubmit}
+          btnTitle="Login"
+          loading={loading}
+        />
+        {/* <Text>{JSON.stringify({name, email,password}, null, 4)}</Text> */}
+        <Text style={styles.linkText}>
+          Don't have an account?
+          <Text
+            style={styles.link}
+            onPress={() => navigation.navigate("Register")}
+          >
+            {" "}
+            Register
+          </Text>
         </Text>
-      </Text>
-    </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -1,5 +1,5 @@
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "@/context/authContext";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,13 +31,6 @@ const HeaderMenu = () => {
         user: null,
       });
       // Show logout alert
-
-      // Force navigation to Login screen
-      // Use reset to clear the navigation stack
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Login" }],
-      });
     } catch (error) {
       console.error("Logout error:", error);
       Alert.alert("Error", "An error occurred during logout");
@@ -46,6 +39,16 @@ const HeaderMenu = () => {
     // alert("Logging you out!");
     // navigation.navigate("Login");
   };
+  useEffect(() => {
+    if (!state.user && !state.taken) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    }
+    // dependecy array ensures that the effects run whenever
+    //  these value changes.
+  }, [state.user, state.token, navigation]);
   return (
     <View>
       <TouchableOpacity onPress={handleLogout}>

@@ -7,11 +7,11 @@ export default function RootLayout() {
   return (
     <>
       <StatusBar style="auto" />
-      <SafeAreaView style={{ flex: 1 }}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-        </Stack>
-      </SafeAreaView>
+      {/* <SafeAreaView style={{ flex: 1 }}> */}
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+      </Stack>
+      {/* </SafeAreaView> */}
     </>
   );
 }

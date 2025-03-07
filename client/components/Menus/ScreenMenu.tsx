@@ -16,8 +16,10 @@ const ScreenMenu = () => {
   // Authenticated user condition : true / false:
   const authneticatedUser = state?.user && state?.token;
   const Stack = createNativeStackNavigator();
+  const initialRoute = authneticatedUser ? "Home" : "Login";
+
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName={initialRoute}>
       {authneticatedUser ? (
         <>
           <Stack.Screen
@@ -56,13 +58,13 @@ const ScreenMenu = () => {
       ) : (
         <>
           <Stack.Screen
-            name="Register"
-            component={Register}
+            name="Login"
+            component={Login}
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Login"
-            component={Login}
+            name="Register"
+            component={Register}
             options={{ headerShown: false }}
           />
         </>
