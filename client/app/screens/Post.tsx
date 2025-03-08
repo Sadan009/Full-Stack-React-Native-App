@@ -29,7 +29,7 @@ interface ErrorResponse {
 
 const Post = ({ navigation }: { navigation: LoginScreenNavigationProp }) => {
   // global state:
-  const [posts, setPosts] = useContext(PostContext);
+  const [posts, setPosts, getAllPosts] = useContext(PostContext);
   // local state:
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -53,27 +53,15 @@ const Post = ({ navigation }: { navigation: LoginScreenNavigationProp }) => {
         description,
       });
       setLoading(false);
-      setPosts([...posts, data?.posts]);
+      // setPosts([...posts, data?.posts]);
       alert(data?.msg);
       navigation.navigate("Home");
     } catch (error) {
       // type guard to check if it's an AxiosError:
       if (!title || !description) {
         return;
-      }
-
-      if (axios.isAxiosError(error)) {
-        const errorResponse = error.response?.data as ErrorResponse;
-        const errorMessage = errorResponse?.message || "Post failed";
-        Alert.alert("Error: ", errorMessage);
-        console.log(error.response?.data);
       } else {
-        const errorMessage =
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occured ";
-        Alert.alert("Error", errorMessage);
-        console.log(error);
+        alert((error && error) || "Unexpected Error");
       }
     }
   };

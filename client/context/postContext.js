@@ -25,10 +25,7 @@ const PostProvider = ({ children }) => {
   // posts on initial time:
   useEffect(() => {
     getAllPosts();
-    // just keep the track of posts so when we navigate to the 
-    // create post to home screen it will show proper data instead 
-    // of null value we are facing the issue.
-  }, [posts]);
+  }, []);
 
   return (
     <PostContext.Provider value={[posts, setPosts]}>

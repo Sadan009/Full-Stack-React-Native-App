@@ -9,6 +9,7 @@ type RootStackParamList = {
   Post: undefined;
   About: undefined;
   Account: undefined;
+  Myposts: undefined;
 };
 
 type FooterMenuNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -39,13 +40,13 @@ const FooterMenu = () => {
         />
         <Text>Post</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => handleNavigation("About")}>
+      <TouchableOpacity onPress={() => handleNavigation("Myposts")}>
         <FontAwesome5
-          name="info-circle"
+          name="list"
           style={styles.iconStyle}
-          color={route.name === "About" && "orange"}
+          color={route.name === "Myposts" && "orange"}
         />
-        <Text>About</Text>
+        <Text>My Posts</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handleNavigation("Account")}>
         <FontAwesome5

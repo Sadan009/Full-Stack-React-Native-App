@@ -1,18 +1,17 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import FooterMenu from "@/components/Menus/FooterMenu";
 import { PostContext } from "@/context/postContext";
 import PostCard from "@/components/PostCard";
+import { useFocusEffect } from "expo-router";
 
 const Home = () => {
   // global state:
-  const [posts] = useContext(PostContext);
-  useEffect(() => {}, [posts]);
+  const [posts, setPosts] = useContext(PostContext);
   return (
     <View style={styles.container}>
       <ScrollView>
-        <PostCard posts={posts} />
-        {/* <Text>{JSON.stringify(posts, null, 4)}</Text> */}
+        <PostCard posts={posts} setPosts={setPosts} />
       </ScrollView>
       <View style={{ backgroundColor: "#ffffff" }}>
         <FooterMenu />
