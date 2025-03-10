@@ -1,59 +1,114 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { FontAwesome5 } from "@expo/vector-icons";
 import axios from "axios";
+import { useNavigation } from "expo-router";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import EditModal from "./EditModal";
+
+type RootStackParamList = {
+  Home: undefined;
+  Login: undefined;
+  Account: undefined;
+  Post: undefined;
+  Myposts: undefined;
+};
 
 interface PostedBy {
   name: string;
   _id: number;
 }
 
-interface Post {
+interface Posts {
   id: number;
+  _id: number;
   title: string;
   description: string;
   postedBy: PostedBy;
   createdAt?: string;
 }
 type Props = {
-  posts: Post[];
+  posts: Posts[];
+  myPostScreen: boolean;
 };
 
-const PostCard = ({ posts }: Props) => {
-  // get posts:
-  // const getAllPosts = async () => {
-  //   setLoding(false);
-  //   try {
-  //     const { data } = await axios.get(`/post/get-all-posts`);
-  //     setLoding(false);
-  //     setPosts(data?.posts);
-  //   } catch (error) {
-  //     console.log(error);
-  //     setLoding(false);
-  //   }
-  // };
+const PostCard = ({ posts, myPostScreen }: Props) => {
+  const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  // to update we are using post, setpost
+  const [post, setPost] = useState({});
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, "Home">>();
 
-  // // posts on initial time:
-  // useEffect(() => {
-  //   getAllPosts();
-  //     // just keep the track of posts so when we navigate to the
-  //     // create post to home screen it will show proper data instead
-  //     // of null value we are facing the issue.
-  //     // issue with [posts]: if we define the posts in the dependecy
-  //     // array the server will run infinte time.
-  //     // find a new solution??
-  //     // solution -> this useEffect and getAllPosts() is in the
-  //     // postContext.js file from where we are trying to get it globally
-  //     // so i changed and moved these two functions here and passed some
-  //     //  props : and all set the issue is fixed.
-  // }, []);
+  //handle delete prompt
+  const handleDeletePropmt = (id: number) => {
+    Alert.alert("Attention!", "Are You Sure Want to delete this post?", [
+      {
+        text: "Cancel",
+        onPress: () => {
+          console.log("cancel press");
+        },
+      },
+      {
+        text: "Delete",
+        onPress: () => handleDeletePost(id),
+      },
+    ]);
+  };
+
+  //delete post data
+  const handleDeletePost = async (id: number) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.delete(`/post/delete-post/${id}`);
+      setLoading(false);
+      alert(data?.msg);
+      navigation.push("Myposts");
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      alert(error);
+    }
+  };
+
   return (
     <View>
       <Text style={styles.heading}>Total Post: {posts?.length}</Text>
+      {myPostScreen && (
+        <EditModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          post={post}
+        />
+      )}
       {posts?.map((item, index) => {
         return (
           <View key={index} style={styles.card}>
+            {myPostScreen && (
+              <View
+                style={{ flexDirection: "row", justifyContent: "flex-end" }}
+              >
+                <Text style={{ marginHorizontal: 20 }}>
+                  <FontAwesome5
+                    name="pen"
+                    size={16}
+                    color={"darkblue"}
+                    onPress={() => {
+                      setPost(item), setModalVisible(true);
+                    }}
+                  />
+                </Text>
+                <Text>
+                  <FontAwesome5
+                    name="trash"
+                    size={16}
+                    color={"red"}
+                    onPress={() => handleDeletePropmt(item?._id)}
+                  />
+                </Text>
+              </View>
+            )}
             <Text style={styles.title}>Title: {item?.title}</Text>
             <Text style={styles.desc}>Desc: {item?.description}</Text>
             <View style={styles.footer}>

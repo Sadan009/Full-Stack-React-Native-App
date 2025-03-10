@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import FooterMenu from "@/components/Menus/FooterMenu";
 import { FontAwesome5 } from "@expo/vector-icons";
 import axios from "axios";
@@ -29,11 +29,11 @@ interface ErrorResponse {
 
 const Post = ({ navigation }: { navigation: LoginScreenNavigationProp }) => {
   // global state:
-  const [posts, setPosts, getAllPosts] = useContext(PostContext);
+  const [posts, setPosts] = useContext(PostContext);
   // local state:
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(false);
+ const [title, setTitle] = useState("");
+ const [description, setDescription] = useState("");
+ const [loading, setLoading] = useState(false);
 
   // handle form data / post Data :
   const handlePost = async () => {
@@ -53,7 +53,7 @@ const Post = ({ navigation }: { navigation: LoginScreenNavigationProp }) => {
         description,
       });
       setLoading(false);
-      // setPosts([...posts, data?.posts]);
+      setPosts([...posts, data?.post]);
       alert(data?.msg);
       navigation.navigate("Home");
     } catch (error) {

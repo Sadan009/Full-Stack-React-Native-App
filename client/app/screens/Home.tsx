@@ -1,17 +1,37 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { useCallback, useContext, useEffect } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  RefreshControl,
+} from "react-native";
+import React, { useCallback, useContext, useState } from "react";
 import FooterMenu from "@/components/Menus/FooterMenu";
 import { PostContext } from "@/context/postContext";
 import PostCard from "@/components/PostCard";
-import { useFocusEffect } from "expo-router";
 
 const Home = () => {
   // global state:
-  const [posts, setPosts] = useContext(PostContext);
+  const [posts, setPosts, getAllPosts] = useContext(PostContext);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // refresh control:
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getAllPosts();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <PostCard posts={posts} setPosts={setPosts} />
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <PostCard posts={posts} myPostScreen={false} />
       </ScrollView>
       <View style={{ backgroundColor: "#ffffff" }}>
         <FooterMenu />

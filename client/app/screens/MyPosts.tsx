@@ -4,7 +4,21 @@ import FooterMenu from "@/components/Menus/FooterMenu";
 import axios from "axios";
 import PostCard from "@/components/PostCard";
 
+interface PostedBy {
+  name: string;
+  _id: number;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  description: string;
+  postedBy: PostedBy;
+  createdAt?: string;
+}
+
 const MyPosts = () => {
+  //state
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +41,7 @@ const MyPosts = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <PostCard posts={posts} />
+        <PostCard posts={posts} myPostScreen={true} />
         {/* <Text>{JSON.stringify(posts, null, 4)}</Text> */}
       </ScrollView>
       <View style={styles.footer}>

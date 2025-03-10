@@ -6,19 +6,21 @@ const PostContext = createContext();
 
 const PostProvider = ({ children }) => {
   // Global state
-  const [loading, setLoding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
 
   //   get posts:
   const getAllPosts = async () => {
-    setLoding(false);
+    setLoading(true);
     try {
       const { data } = await axios.get(`/post/get-all-posts`);
-      setLoding(false);
       setPosts(data?.posts);
+      setLoading(false);
+      return data?.posts;
     } catch (error) {
       console.log(error);
-      setLoding(false);
+      setLoading(false);
+      return undefined;
     }
   };
 
@@ -28,7 +30,7 @@ const PostProvider = ({ children }) => {
   }, []);
 
   return (
-    <PostContext.Provider value={[posts, setPosts]}>
+    <PostContext.Provider value={[posts, setPosts, getAllPosts]}>
       {children}
     </PostContext.Provider>
   );
